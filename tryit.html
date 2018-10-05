@@ -9,6 +9,16 @@
     float: left;
     width: 100%
 }
+
+#try {
+     
+  height: 270px;
+  float: left;
+  padding: 10px; 
+  width: 100%;
+  margin: 30px;
+  background-color: blue;
+  }
 </style>
 	<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
     <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
@@ -16,6 +26,9 @@
     <script type="text/javascript">
       window.onload = function() {
         L.mapquest.key = 'lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24';
+</script>
+<script>
+document.getElementById("try1").innerHTML = 5 ;
 </script>
 </head>
 <body>
@@ -26,15 +39,19 @@
   <div class="alert alert-info" role="alert"><b>Note:</b> Drag the POI or click on the map to
     update marker location and latitude/longitude. 
   </div>
+  
 
   <div id="note" style="visibility: hidden;">
 
   </div>
 
   <div id="map_container">
-    <div class="mapHead" id="resultDiv">&nbsp;</div>
-
+    <div id="resultDiv">&nbsp;</div>
+      
     <div id="lat-long-map">&nbsp;</div>
+
+    <br>
+
   </div>
 </div>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"
@@ -95,26 +112,26 @@
     return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
   }
 
-  /*function popInfo() {
+  function popInfo() {
     street = document.getElementById("street").value;
     city = document.getElementById("city").value;
     state = document.getElementById("state").value;
     postal = document.getElementById("postalCode").value;
     country = document.getElementById("country").value;
-    /* var locality="<div class='mapTitle'> <span class='latitude'>City:</span" + city + "<span class='latitude'>Country:</span" + country + "</div";
-    document.getElementById('resultDiv').innerHTML = locality;
-    var try =5;
-    document.getElementById("try1").innerHTML= try;*
+     var locality="<div class='mapTitle'> <span class='latitude'>City:</span" + city + "<span class='latitude'>Country:</span" + country + "</div";
+    document.getElementById('res').innerHTML = locality;
+    
     if (document.getElementById("country").value == "") {
       country = "US";
     } else {
       country = document.getElementById("country").value;
     }
     simpleGeocode();
-  }*/
+  }
 
   function clearMap() {
     document.getElementById('resultDiv').innerHTML = strResult;
+    document.getElementById('res').innerHTML = locality;
     document.getElementById("street").value = "";
     document.getElementById("city").value = "";
     document.getElementById("state").value = "";
@@ -187,5 +204,6 @@
 
 
 </div>
+
 </body>
 </html>
