@@ -1,0 +1,59 @@
+.votingSys{
+	position: relative;
+	bottom: 0;
+	right: 0;
+}
+
+.upvote{
+	float: right;
+	margin-right: 0.5vw;
+	height: 30px;
+	width: 30px;
+	border: 0;
+}
+
+.downvote{
+	float: right;
+	margin-right: 0.5vw;
+	height: 30px;
+	width: 30px;
+	border: 0;
+}
+
+.postComment{
+	float: right;
+	margin-right: 3vw;
+	height: 30px;
+	width: 30px;
+	border: 0;
+}
+
+.commentBox{
+	clear: both;
+	width: 100%;
+	margin-top: 9vh;
+}
+
+.commentContainer{
+	clear: both;
+	position: relative;
+	width: 100%;
+}
+
+.commentContainer input{
+	width: 80%;
+	float: left;
+}
+
+.commentContainer button{
+	width: 15%;
+	float: left;
+	margin-left: 2%;
+}
+
+.allComments{
+	position: relative;
+	clear: both;
+	width: 100%;
+	margin-top: 9vh;
+}
