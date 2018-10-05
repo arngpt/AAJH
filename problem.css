@@ -1,3 +1,8 @@
+body{
+	background-color: cornsilk;
+
+}
+
 .votingSys{
 	position: relative;
 	bottom: 0;
@@ -57,4 +62,13 @@
 	clear: both;
 	width: 100%;
 	margin-top: 9vh;
+}
+a: hover{
+	color: blue;
+	text-decoration: underline;
+	text-decoration-color: blue;
+
+}
+h2{
+	color: black
 }
