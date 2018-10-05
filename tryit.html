@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+	#lat-long-map {
+    border: 1px solid #e0e0df;
+    height: 400px;
+    float: left;
+    width: 100%
+}
+</style>
+	<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        L.mapquest.key = 'lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24';
+</script>
+</head>
+<body>
+
+
+<h2>Result</h2>
+
+  <div class="alert alert-info" role="alert"><b>Note:</b> Drag the POI or click on the map to
+    update marker location and latitude/longitude. 
+  </div>
+
+  <div id="note" style="visibility: hidden;">
+
+  </div>
+
+  <div id="map_container">
+    <div class="mapHead" id="resultDiv">&nbsp;</div>
+
+    <div id="lat-long-map">&nbsp;</div>
+  </div>
+</div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"
+      rel="stylesheet"/>
+<link href="/documentation/assets/styles/lat-long.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+<script
+  src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24"></script>
+<script
+  src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-geocoding.js?key=lYrP4vF3Uk5zgTiGGuEzQGwGIVDGuy24"></script>
+
+<script type="text/javascript">
+  if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(str) {
+      return this.lastIndexOf(str, 0) === 0;
+    };
+  }
+
+  var mapLayer = MQ.mapLayer();
+  var mapLeaflet;
+
+  var latLng = new L.LatLng(18.997859, 72.836778);
+
+  showLL(latLng, '');
+
+  var map = L.map('lat-long-map', {
+    layers: mapLayer,
+    center: latLng,
+    zoom: 15
+  }).on('click', function(e) {
+    addMarker(e);
+  });
+
+  L.control.layers({
+    'Map': mapLayer,
+    'Dark': MQ.darkLayer(),
+    'Light': MQ.lightLayer(),
+    'Satellite': MQ.satelliteLayer()
+  }).addTo(map);
+
+  var mapQuestMarker = L.icon({
+    iconUrl: MQ.mapConfig.getConfig("imagePath") + 'poi.png',
+    iconRetinaUrl: MQ.mapConfig.getConfig("imagePath") + 'poi@2x.png',
+    iconSize: [36, 35],
+    iconAnchor: [15, 35],
+    popupAnchor: [-1, -30]
+  });
+
+  var popup = L.marker(latLng, {icon: mapQuestMarker, draggable: true}).addTo(map);
+
+  popup.on('dragend', function(event) {
+    var marker = event.target;
+    var position = marker.getLatLng().wrap();
+    showLL(position, 'USER_DEFINED');
+  });
+
+  function roundNumber(num, dec) {
+    return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
+  }
+
+  /*function popInfo() {
+    street = document.getElementById("street").value;
+    city = document.getElementById("city").value;
+    state = document.getElementById("state").value;
+    postal = document.getElementById("postalCode").value;
+    country = document.getElementById("country").value;
+    /* var locality="<div class='mapTitle'> <span class='latitude'>City:</span" + city + "<span class='latitude'>Country:</span" + country + "</div";
+    document.getElementById('resultDiv').innerHTML = locality;
+    var try =5;
+    document.getElementById("try1").innerHTML= try;*
+    if (document.getElementById("country").value == "") {
+      country = "US";
+    } else {
+      country = document.getElementById("country").value;
+    }
+    simpleGeocode();
+  }*/
+
+  function clearMap() {
+    document.getElementById('resultDiv').innerHTML = strResult;
+    document.getElementById("street").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("state").value = "";
+    document.getElementById("postalCode").value = "";
+  }
+
+  function addMarker(e) {
+    popup.setLatLng(e.latlng);
+    showLL(e.latlng.wrap(), 'USER_DEFINED');
+  }
+
+  function simpleGeocode() {
+    var geocode = MQ.geocode()
+      .search({
+        'street': street,
+        'city': city,
+        'state': state,
+        'postalCode': postal,
+        'adminArea1': country
+
+      })
+      .on('success', function(e) {
+        var best = e.result.best;
+        var latlng = best.latlng;
+        
+    
+       
+
+        map.setView(latlng, getZoomFromResultCode(quality));
+
+        popup.setLatLng(latlng);
+
+        showLL(latlng, quality);
+      });
+  }
+
+  function getZoomFromResultCode(resultCode) {
+    var zoom = 12;
+    if (resultCode.startsWith("P") || resultCode.startsWith("L") || resultCode.startsWith("B")
+      || resultCode.startsWith("I")) {
+      zoom = 15;
+    } else if (resultCode.startsWith("Z") || resultCode.startsWith("A5")) {
+      zoom = 12;
+    } else if (resultCode.startsWith("A4")) {
+      zoom = 9;
+    } else if (resultCode.startsWith("A3")) {
+      zoom = 5;
+    } else if (resultCode.startsWith("A1")) {
+      zoom = 2;
+    }
+
+    return zoom;
+  }
+
+  function showLL(ll, quality) {
+    strResult = "<div class='mapTitle'><span class='latitude'>Latitude:</span> " + roundNumber(ll.lat, 6) + "<span class='longitude'>, Longitude:</span> " + roundNumber(ll.lng, 6) + "</div>";
+    document.getElementById('resultDiv').innerHTML = strResult;
+
+  }
+
+  function searchKeyPress(e) {
+    if (window.event) {
+      e = window.event;
+    }
+    if (e.keyCode == 13) {
+      document.getElementById('btnGC').click();
+    }
+  }
+</script>
+
+
+</div>
+</body>
+</html>
